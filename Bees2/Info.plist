@@ -21,6 +21,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2018 Thomas Blench. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
-	<string>Bees2View</string>
+	<string>BeesSwiftView</string>
 </dict>
 </plist>
