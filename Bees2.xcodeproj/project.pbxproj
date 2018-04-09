@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		8E9989AB207BF7510081EEAE /* BeesSwiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AA207BF7510081EEAE /* BeesSwiftView.swift */; };
+		8E9989AD207BF9DB0081EEAE /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AC207BF9DB0081EEAE /* Vector.swift */; };
+		8E9989AF207BF9EE0081EEAE /* Bee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AE207BF9EE0081EEAE /* Bee.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8E99899D207BF66A0081EEAE /* Bees2.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Bees2.saver; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E9989A4207BF66A0081EEAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E9989AA207BF7510081EEAE /* BeesSwiftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeesSwiftView.swift; sourceTree = "<group>"; };
+		8E9989AC207BF9DB0081EEAE /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		8E9989AE207BF9EE0081EEAE /* Bee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bee.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +52,8 @@
 			children = (
 				8E9989A4207BF66A0081EEAE /* Info.plist */,
 				8E9989AA207BF7510081EEAE /* BeesSwiftView.swift */,
+				8E9989AC207BF9DB0081EEAE /* Vector.swift */,
+				8E9989AE207BF9EE0081EEAE /* Bee.swift */,
 			);
 			path = Bees2;
 			sourceTree = "<group>";
@@ -131,6 +137,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E9989AD207BF9DB0081EEAE /* Vector.swift in Sources */,
+				8E9989AF207BF9EE0081EEAE /* Bee.swift in Sources */,
 				8E9989AB207BF7510081EEAE /* BeesSwiftView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
