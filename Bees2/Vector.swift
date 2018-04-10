@@ -27,10 +27,19 @@ public class Vector {
     public static func *(lhs: Vector, rhs: Double) -> Vector {
         return Vector(x: lhs.x*rhs, y: lhs.y*rhs)
     }
+
+    public static func /(lhs: Vector, rhs: Double) -> Vector {
+        return Vector(x: lhs.x/rhs, y: lhs.y/rhs)
+    }
     
     public static func +(lhs: Vector, rhs: Vector) -> Vector {
         return Vector(x: lhs.x+rhs.x, y: lhs.y+rhs.y)
     }
+
+    public static func -(lhs: Vector, rhs: Vector) -> Vector {
+        return Vector(x: lhs.x-rhs.x, y: lhs.y-rhs.y)
+    }
+
     
     public var x: Double
     public var y: Double

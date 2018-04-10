@@ -10,6 +10,7 @@
 		8E9989AB207BF7510081EEAE /* BeesSwiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AA207BF7510081EEAE /* BeesSwiftView.swift */; };
 		8E9989AD207BF9DB0081EEAE /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AC207BF9DB0081EEAE /* Vector.swift */; };
 		8E9989AF207BF9EE0081EEAE /* Bee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AE207BF9EE0081EEAE /* Bee.swift */; };
+		8E9989B1207C92B10081EEAE /* ConfigureSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E9989B0207C92B10081EEAE /* ConfigureSheet.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +19,7 @@
 		8E9989AA207BF7510081EEAE /* BeesSwiftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeesSwiftView.swift; sourceTree = "<group>"; };
 		8E9989AC207BF9DB0081EEAE /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		8E9989AE207BF9EE0081EEAE /* Bee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bee.swift; sourceTree = "<group>"; };
+		8E9989B0207C92B10081EEAE /* ConfigureSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConfigureSheet.xib; path = Bees2/ConfigureSheet.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +36,7 @@
 		8E998993207BF66A0081EEAE = {
 			isa = PBXGroup;
 			children = (
+				8E9989B0207C92B10081EEAE /* ConfigureSheet.xib */,
 				8E99899F207BF66A0081EEAE /* Bees2 */,
 				8E99899E207BF66A0081EEAE /* Products */,
 			);
@@ -127,6 +130,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E9989B1207C92B10081EEAE /* ConfigureSheet.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +291,7 @@
 				8E9989A9207BF66A0081EEAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

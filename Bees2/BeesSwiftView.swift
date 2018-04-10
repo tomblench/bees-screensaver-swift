@@ -10,13 +10,37 @@ import Foundation
 import ScreenSaver
 
 public class BeesSwiftView: ScreenSaverView {
+
+    // prefs
+    @IBOutlet weak var queenSpeedSlider: NSSlider!
+    @IBOutlet weak var swarmSpeedSlider: NSSlider!
+    @IBOutlet weak var swarmAccelerationSlider: NSSlider!
+    @IBOutlet weak var swarmRespawnRadiusSlider: NSSlider!
+    var queenSpeed = 20.0
+    var swarmSpeed = 5.0
+    var swarmRespawnRadius = 2.0
+    var swarmAcceleration = 0.01
+    var alpha = CGFloat(0.1)
     
+    // beezzz
     let queen = Bee()
+    var swarm = Array<Bee>()
     
+    // prefs window
+    var prefsWindow: NSWindow?
+
+
     override public init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
-        queen.position.x = self.bounds.width.native/2.0;
-        queen.position.y = self.bounds.height.native/2.0;
+        // seed queen in centre
+        queen.position.x = self.bounds.width.native/2.0
+        queen.position.y = self.bounds.height.native/2.0
+        // seed drones in random positions
+        for _ in 1...50 {
+            swarm.append(Bee(x: drand48()*self.bounds.width.native, y: drand48()*self.bounds.height.native))
+        }
+        NSColor.white.set()
+        NSRectFill(self.bounds)
     }
     
     public required init?(coder: NSCoder) {
@@ -24,13 +48,38 @@ public class BeesSwiftView: ScreenSaverView {
     }
 
     public override func animateOneFrame() {
-        queen.direction.x = drand48()*10.0-5.0;
-        queen.direction.y = drand48()*10.0-5.0;
+        // clear background
+        NSColor.black.withAlphaComponent(alpha).set()
+        NSRectFillUsingOperation(self.bounds, NSCompositeSourceOver)
+        // animate queen
+        NSColor.red.set()
+        queen.direction.x = drand48()*queenSpeed-queenSpeed/2.0
+        queen.direction.y = drand48()*queenSpeed-queenSpeed/2.0
         queen.step()
-        NSColor.white.setFill()
-        NSRectFill(self.bounds)
-        NSColor.blue.set()
         NSRectFill(NSRect(x: queen.position.x, y: queen.position.y, width: 5.0, height: 5.0))
+        NSColor.blue.set()
+        for d in swarm {
+            // set vector towards queen
+            let diff = queen.position - d.position
+            // re-spawn drone if it's too close to queen
+            if (diff.mag() < swarmRespawnRadius) {
+                d.position.x = drand48()*self.bounds.width.native
+                d.position.y = drand48()*self.bounds.height.native
+                d.direction.x = 0
+                d.direction.y = 0
+                continue
+            }
+            // change direction vector to seek queen
+            d.direction = d.direction + diff * swarmAcceleration
+            // limit speed of drones
+            let scale = d.direction.mag() / swarmSpeed
+            if (scale > 1.0) {
+                d.direction = d.direction / scale
+            }
+            d.step()
+            NSRectFill(NSRect(x: d.position.x, y: d.position.y, width: 5.0, height: 5.0))
+        }
+        
     }
 
     
@@ -38,5 +87,32 @@ public class BeesSwiftView: ScreenSaverView {
         super.draw(dirtyRect)
     }
     
+    public override func hasConfigureSheet() -> Bool {
+        return true
+    }
+    
+    public override func configureSheet() -> NSWindow? {
+        var objects = NSArray()
+        Bundle.init(for: BeesSwiftView.self).loadNibNamed("ConfigureSheet", owner: self, topLevelObjects: &objects)
+        NSLog("**** configureSheet with %@", objects)
+        self.prefsWindow = objects[0] as? NSWindow
+        self.queenSpeedSlider.doubleValue = queenSpeed
+        self.swarmSpeedSlider.doubleValue = swarmSpeed
+        self.swarmAccelerationSlider.doubleValue = swarmAcceleration
+        self.swarmRespawnRadiusSlider.doubleValue = swarmRespawnRadius
+        NSLog("**** configureSheet with %@", prefsWindow ?? "nil")
+        return prefsWindow
+    }
+    
+    @IBAction func onOk(_ sender: Any) {
+        NSLog("**** onok with %@", prefsWindow ?? "nil")
+        self.queenSpeed = queenSpeedSlider.doubleValue
+        self.swarmSpeed = swarmSpeedSlider.doubleValue
+        self.swarmAcceleration = swarmAccelerationSlider.doubleValue
+        self.swarmRespawnRadius = swarmRespawnRadiusSlider.doubleValue
+        // TODO save prefs
+        // TODO figure out how to replace this deprecated method
+        NSApp.endSheet(prefsWindow!)
+    }
     
 }
