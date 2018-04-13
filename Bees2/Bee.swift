@@ -13,18 +13,22 @@ public class Bee {
     public init() {
         self.direction = Vector()
         self.position = Vector()
+        self.age = 0
     }
     
     public init(x: Double, y:Double) {
         self.position = Vector(x: x, y: y)
         self.direction = Vector()
+        self.age = 0
     }
     
     public func step() {
         self.position = self.position + self.direction
+        age+=1
     }
     
     public var position: Vector
     public var direction: Vector
+    public var age: Int64
     
 }
