@@ -32,7 +32,7 @@ public class BeesSwiftView: ScreenSaverView {
     let fadePrefsKey = "org.blench.bees.fade"
     
     // beezzz
-    let queen = Bee()
+    var queens = Array<Bee>()
     var swarm = Array<Bee>()
     
     // prefs window
@@ -41,9 +41,10 @@ public class BeesSwiftView: ScreenSaverView {
 
     override public init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
-        // seed queen in centre
-        queen.position.x = self.bounds.width.native/2.0
-        queen.position.y = self.bounds.height.native/2.0
+        // seed queens in centre
+        for _ in 1...10 {
+            queens.append(Bee(x: self.bounds.width.native/2.0, y: self.bounds.height.native/2.0))
+        }
         // seed drones in random positions
         for _ in 1...250 {
             swarm.append(Bee(x: drand48()*self.bounds.width.native, y: drand48()*self.bounds.height.native))
@@ -81,7 +82,15 @@ public class BeesSwiftView: ScreenSaverView {
             // fade in by age
             swarmColour.withAlphaComponent(CGFloat(min(Double(d.age) / 300.0, 1.0))).set()
             // set vector towards queen
-            let diff = queen.position - d.position
+            // TODO rewrite "functionally"
+            var diff = Vector(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude)
+            for q in queens {
+                // find closest
+                let curDiff = q.position - d.position
+                if (curDiff.mag() < diff.mag()) {
+                    diff = curDiff
+                }
+            }
             // re-spawn drone if it's too close to queen
             if (diff.mag() < swarmRespawnRadius) {
                 d.position.x = drand48()*self.bounds.width.native
@@ -103,10 +112,25 @@ public class BeesSwiftView: ScreenSaverView {
         }
         // animate queen
         //NSColor.red.set()
-        queen.direction.x = drand48()*queenSpeed-queenSpeed/2.0
-        queen.direction.y = drand48()*queenSpeed-queenSpeed/2.0
-        queen.step()
-        //NSRectFill(NSRect(x: queen.position.x, y: queen.position.y, width: 5.0, height: 5.0))
+        for q in queens {
+            q.direction.x = drand48()*queenSpeed-queenSpeed/2.0
+            q.direction.y = drand48()*queenSpeed-queenSpeed/2.0
+            q.step()
+            // wrap
+            if (q.position.x < 0) {
+                q.position.x = Double(self.bounds.width)
+            }
+            if (q.position.x > Double(self.bounds.width)) {
+                q.position.x = 0
+            }
+            if (q.position.y < 0) {
+                q.position.y = Double(self.bounds.height)
+            }
+            if (q.position.y > Double(self.bounds.height)) {
+                q.position.y = 0
+            }
+            //NSRectFill(NSRect(x: queen.position.x, y: queen.position.y, width: 5.0, height: 5.0))
+        }
 
     }
 
