@@ -72,17 +72,15 @@ public class BeesSwiftView: ScreenSaverView {
             let colour = defaults[BeesSwiftView.swarmColourPrefsKey] as! [Double]
             NSColor.init(red: CGFloat(colour[0]), green: CGFloat(colour[1]), blue: CGFloat(colour[2]), alpha: CGFloat(min(Double(d.age) / 300.0, 1.0))).set()
             // set vector towards queen
-            // TODO rewrite "functionally"
-            var diff = Vector(x: Double.greatestFiniteMagnitude, y: Double.greatestFiniteMagnitude)
-            for q in queens {
-                // find closest
-                let curDiff = q.position - d.position
-                if (curDiff.mag() < diff.mag()) {
-                    diff = curDiff
-                }
+            // find closest queen, its difference vector, and magnitude
+            let diff = queens.map { (q) -> (Bee, Vector, Double) in
+                let diff = q.position - d.position
+                return (q, diff, diff.mag())
+            }.min { (arg0, arg1) -> Bool in
+                return arg0.2 < arg1.2
             }
             // re-spawn drone if it's too close to queen
-            if (diff.mag() < (defaults[BeesSwiftView.swarmRespawnRadiusPrefsKey] as! Double)) {
+            if ((diff?.2)! < (defaults[BeesSwiftView.swarmRespawnRadiusPrefsKey] as! Double)) {
                 d.position.x = drand48()*self.bounds.width.native
                 d.position.y = drand48()*self.bounds.height.native
                 d.direction.x = 0
@@ -91,7 +89,7 @@ public class BeesSwiftView: ScreenSaverView {
                 continue
             }
             // change direction vector to seek queen
-            d.direction = d.direction + diff * (defaults[BeesSwiftView.swarmAccelerationPrefsKey] as! Double)
+            d.direction = d.direction + (diff?.1)! * (defaults[BeesSwiftView.swarmAccelerationPrefsKey] as! Double)
             // limit speed of drones
             let scale = d.direction.mag() / (defaults[BeesSwiftView.swarmSpeedPrefsKey] as! Double)
             if (scale > 1.0) {
