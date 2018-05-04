@@ -39,11 +39,11 @@ public class BeesSwiftView: ScreenSaverView {
         super.init(frame: frame, isPreview: isPreview)
         // seed queens in centre
         for _ in 1...10 {
-            queens.append(Bee(x: self.bounds.width.native/2.0, y: self.bounds.height.native/2.0))
+            queens.append(Bee(x: Float(self.bounds.width.native/2.0), y: Float(self.bounds.height.native/2.0)))
         }
         // seed drones in random positions
         for _ in 1...250 {
-            swarm.append(Bee(x: drand48()*self.bounds.width.native, y: drand48()*self.bounds.height.native))
+            swarm.append(Bee(x: Float(drand48()*self.bounds.width.native), y: Float(drand48()*self.bounds.height.native)))
         }
         NSColor.white.set()
         NSRectFill(self.bounds)
@@ -72,17 +72,17 @@ public class BeesSwiftView: ScreenSaverView {
         // TODO use a compositing mode so that dark bees don't block light ones
         // OR respawn new bees by adding to them at the beginning of the list and draw them first
         let colour = saverDefaults?.array(forKey: BeesSwiftView.swarmColourPrefsKey) as! [Double]
-        let respawnRadius = (saverDefaults?.double(forKey: BeesSwiftView.swarmRespawnRadiusPrefsKey))!
-        let swarmAcceleration = (saverDefaults?.double(forKey: BeesSwiftView.swarmAccelerationPrefsKey))!
-        let queenSpeed = (saverDefaults?.double(forKey: BeesSwiftView.queenSpeedPrefsKey))!
-        let swarmSpeed = (saverDefaults?.double(forKey: BeesSwiftView.swarmSpeedPrefsKey))!
+        let respawnRadius = (saverDefaults?.float(forKey: BeesSwiftView.swarmRespawnRadiusPrefsKey))!
+        let swarmAcceleration = (saverDefaults?.float(forKey: BeesSwiftView.swarmAccelerationPrefsKey))!
+        let queenSpeed = (saverDefaults?.float(forKey: BeesSwiftView.queenSpeedPrefsKey))!
+        let swarmSpeed = (saverDefaults?.float(forKey: BeesSwiftView.swarmSpeedPrefsKey))!
         for d in swarm {
             // fade in by age
             //swarmColour.withAlphaComponent(CGFloat(min(Double(d.age) / 300.0, 1.0))).set()
             NSColor.init(red: CGFloat(colour[0]), green: CGFloat(colour[1]), blue: CGFloat(colour[2]), alpha: CGFloat(min(Double(d.age) / 300.0, 1.0))).set()
             // set vector towards queen
             // find closest queen, its difference vector, and magnitude
-            let diff = queens.map { (q) -> (Bee, Vector, Double) in
+            let diff = queens.map { (q) -> (Bee, Vector, Float) in
                 let diff = q.position - d.position
                 return (q, diff, diff.mag())
             }.min { (arg0, arg1) -> Bool in
@@ -90,8 +90,8 @@ public class BeesSwiftView: ScreenSaverView {
             }
             // re-spawn drone if it's too close to queen
             if ((diff?.2)! < respawnRadius) {
-                d.position.x = drand48()*self.bounds.width.native
-                d.position.y = drand48()*self.bounds.height.native
+                d.position.x = Float(drand48()*self.bounds.width.native)
+                d.position.y = Float(drand48()*self.bounds.height.native)
                 d.direction.x = 0
                 d.direction.y = 0
                 d.age = 0
@@ -105,25 +105,25 @@ public class BeesSwiftView: ScreenSaverView {
                 d.direction = d.direction / scale
             }
             d.step()
-            NSRectFill(NSRect(x: d.position.x, y: d.position.y, width: 5.0, height: 5.0))
+            NSRectFill(NSRect(x: Double(d.position.x), y: Double(d.position.y), width: 5.0, height: 5.0))
         }
         // animate queen
 //        NSColor.red.set()
         for q in queens {
-            q.direction.x = drand48()*queenSpeed-queenSpeed/2.0
-            q.direction.y = drand48()*queenSpeed-queenSpeed/2.0
+            q.direction.x = Float(drand48())*queenSpeed-queenSpeed/2.0
+            q.direction.y = Float(drand48())*queenSpeed-queenSpeed/2.0
             q.step()
             // wrap
             if (q.position.x < 0) {
-                q.position.x = Double(self.bounds.width)
+                q.position.x = Float(self.bounds.width)
             }
-            if (q.position.x > Double(self.bounds.width)) {
+            if (q.position.x > Float(self.bounds.width)) {
                 q.position.x = 0
             }
             if (q.position.y < 0) {
-                q.position.y = Double(self.bounds.height)
+                q.position.y = Float(self.bounds.height)
             }
-            if (q.position.y > Double(self.bounds.height)) {
+            if (q.position.y > Float(self.bounds.height)) {
                 q.position.y = 0
             }
 //            NSRectFill(NSRect(x: q.position.x, y: q.position.y, width: 5.0, height: 5.0))

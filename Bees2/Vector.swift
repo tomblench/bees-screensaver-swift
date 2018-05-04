@@ -15,20 +15,20 @@ public class Vector {
         self.y = 0
     }
     
-    public init(x: Double, y: Double) {
+    public init(x: Float, y: Float) {
         self.x = x
         self.y = y
     }
     
-    public func mag() -> Double {
+    public func mag() -> Float {
         return sqrt(x*x+y*y)
     }
     
-    public static func *(lhs: Vector, rhs: Double) -> Vector {
+    public static func *(lhs: Vector, rhs: Float) -> Vector {
         return Vector(x: lhs.x*rhs, y: lhs.y*rhs)
     }
 
-    public static func /(lhs: Vector, rhs: Double) -> Vector {
+    public static func /(lhs: Vector, rhs: Float) -> Vector {
         return Vector(x: lhs.x/rhs, y: lhs.y/rhs)
     }
     
@@ -41,6 +41,6 @@ public class Vector {
     }
 
     
-    public var x: Double
-    public var y: Double
+    public var x: Float
+    public var y: Float
 }
