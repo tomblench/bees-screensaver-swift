@@ -14,6 +14,11 @@ public class Vector {
         self.x = 0
         self.y = 0
     }
+
+    public init(r: Float, θ: Float) {
+        self.x = r*sin(θ)
+        self.y = r*cos(θ)
+    }
     
     public init(x: Float, y: Float) {
         self.x = x

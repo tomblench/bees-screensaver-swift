@@ -16,8 +16,8 @@ public class Bee {
         self.age = 0
     }
     
-    public init(x: Float, y:Float) {
-        self.position = Vector(x: x, y: y)
+    public init(v: Vector) {
+        self.position = v
         self.direction = Vector()
         self.age = 0
     }

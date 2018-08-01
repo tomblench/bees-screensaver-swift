@@ -34,17 +34,27 @@ public class BeesSwiftView: ScreenSaverView {
     
     // prefs window
     var prefsWindow: NSWindow?
-
+    
+    private func randomPoint(x: Float, y: Float) -> Vector {
+        return Vector(x: Float(drand48())*x, y: Float(drand48())*y)
+    }
+    
+    private func randomCircularPoint(x: Float, y: Float) -> Vector {
+        // circle radius min(x,y), centred at origin
+        let circ = Vector(r: Float(min(x/2, y/2)), θ: Float(drand48())*Float.pi*2)
+        // move into middle
+        return circ + Vector(x: x/2, y: y/2)
+    }
 
     override public init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
         // seed queens in centre
         for _ in 1...10 {
-            queens.append(Bee(x: Float(self.bounds.width.native/2.0), y: Float(self.bounds.height.native/2.0)))
+            queens.append(Bee(v: Vector(x: Float(self.bounds.width.native)/2, y: Float(self.bounds.height.native)/2)))
         }
         // seed drones in random positions
         for _ in 1...250 {
-            swarm.append(Bee(x: Float(drand48()*self.bounds.width.native), y: Float(drand48()*self.bounds.height.native)))
+            swarm.append(Bee(v: randomCircularPoint(x: Float(self.bounds.width.native), y: Float(self.bounds.height.native))))
         }
         NSColor.white.set()
         NSRectFill(self.bounds)
@@ -91,8 +101,7 @@ public class BeesSwiftView: ScreenSaverView {
             }
             // re-spawn drone if it's too close to queen
             if ((diff?.2)! < respawnRadius) {
-                d.position.x = Float(drand48()*self.bounds.width.native)
-                d.position.y = Float(drand48()*self.bounds.height.native)
+                d.position = randomCircularPoint(x: Float(self.bounds.width.native), y: Float(self.bounds.height.native))
                 d.direction.x = 0
                 d.direction.y = 0
                 d.age = 0
