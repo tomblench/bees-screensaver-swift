@@ -60,13 +60,13 @@ public class BeesSwiftView: ScreenSaverView {
         NSRectFill(self.bounds)
         // use our bundle id to register defaults
         NSLog("Bundle name %@", Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
-        let defaults = [BeesSwiftView.queenSpeedPrefsKey:18.30617704280156,
-                        BeesSwiftView.swarmSpeedPrefsKey:9.721546692607003,
-                        BeesSwiftView.swarmRespawnRadiusPrefsKey:3.0,
-                        BeesSwiftView.swarmAccelerationPrefsKey:0.02338430204280156,
+        let defaults = [BeesSwiftView.queenSpeedPrefsKey:5.710116731517509,
+                        BeesSwiftView.swarmSpeedPrefsKey:3.162086575875486,
+                        BeesSwiftView.swarmRespawnRadiusPrefsKey:0.2740454766536965,
+                        BeesSwiftView.swarmAccelerationPrefsKey:0.008631748540856032,
                         BeesSwiftView.fadePrefsKey:0.06514469844357977,
                         BeesSwiftView.swarmColourPrefsKey:[0.0,0.0,1.0],
-                        BeesSwiftView.queenColourPrefsKey:[1.0,0.0,0.0,1.0]] as [String : Any]
+                        BeesSwiftView.queenColourPrefsKey:[1.0,0.4153324174586498,0.790315105986194,1.0]] as [String : Any]
         saverDefaults = ScreenSaverDefaults(forModuleWithName: Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
         NSLog("Saver defaults %@", saverDefaults ?? "nil")
         saverDefaults!.register(defaults: defaults)
