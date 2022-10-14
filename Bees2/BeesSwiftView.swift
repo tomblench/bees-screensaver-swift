@@ -56,8 +56,6 @@ public class BeesSwiftView: ScreenSaverView {
         for _ in 1...250 {
             swarm.append(Bee(v: randomCircularPoint(x: Float(self.bounds.width.native), y: Float(self.bounds.height.native))))
         }
-        NSColor.white.set()
-        NSRectFill(self.bounds)
         // use our bundle id to register defaults
         NSLog("Bundle name %@", Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
         let defaults = [BeesSwiftView.queenSpeedPrefsKey:5.710116731517509,
@@ -78,8 +76,13 @@ public class BeesSwiftView: ScreenSaverView {
     }
 
     public override func animateOneFrame() {
+        self.needsDisplay = true
+    }
+
+    public override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
         // clear background
-        let context = NSGraphicsContext.current()?.cgContext
+        let context = NSGraphicsContext.current?.cgContext
         context?.setFillColor(CGColor.black.copy(alpha: CGFloat((saverDefaults?.double(forKey: BeesSwiftView.fadePrefsKey))!))!)
         context?.setBlendMode(CGBlendMode.normal)
         context?.fill(self.bounds)
@@ -145,23 +148,20 @@ public class BeesSwiftView: ScreenSaverView {
             context?.addEllipse(in: NSRect(x: Double(q.position.x), y: Double(q.position.y), width: 5.0, height: 5.0))
             context?.fillPath()
         }
-
-    }
-
-    
-    public override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
     }
     
-    public override func hasConfigureSheet() -> Bool {
-        return true
+    public override var hasConfigureSheet: Bool {
+        get {
+            return true
+        }
     }
     
-    public override func configureSheet() -> NSWindow? {
-        var objects = NSArray()
-        Bundle.init(for: BeesSwiftView.self).loadNibNamed("ConfigureSheet", owner: self, topLevelObjects: &objects)
-        NSLog("**** configureSheet with %@", objects)
-        for o in objects {
+    public override var configureSheet:  NSWindow? {
+        get {
+            var objects = Optional.some( NSArray())
+            Bundle.init(for: BeesSwiftView.self).loadNibNamed(NSNib.Name("ConfigureSheet"), owner: self, topLevelObjects: &objects)
+        NSLog("**** configureSheet with %@", objects!)
+        for o in objects! {
             if (o is NSWindow) {
                 self.prefsWindow = o as? NSWindow
             }
@@ -178,6 +178,7 @@ public class BeesSwiftView: ScreenSaverView {
         NSLog("**** configureSheet with %@", prefsWindow ?? "nil")
         return prefsWindow
     }
+    }
     
     @IBAction func onOk(_ sender: Any) {
         NSLog("**** onok with %@", prefsWindow ?? "nil")
@@ -188,7 +189,7 @@ public class BeesSwiftView: ScreenSaverView {
         saverDefaults?.set(fadeSlider.doubleValue, forKey: BeesSwiftView.fadePrefsKey)
         saverDefaults?.set([swarmColorWell.color.redComponent.native, swarmColorWell.color.greenComponent.native, swarmColorWell.color.blueComponent.native], forKey: BeesSwiftView.swarmColourPrefsKey)
         saverDefaults?.set([queenColorWell.color.redComponent.native, queenColorWell.color.greenComponent.native, queenColorWell.color.blueComponent.native, queenColorWell.color.alphaComponent.native], forKey: BeesSwiftView.queenColourPrefsKey)
-        NSColorPanel.shared().orderOut(self)
+        NSColorPanel.shared.orderOut(self)
         // TODO figure out how to replace this deprecated method
         NSLog("on ok Saver defaults %@", saverDefaults ?? "nil")
         saverDefaults?.synchronize()
