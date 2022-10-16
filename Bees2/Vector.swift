@@ -28,6 +28,10 @@ public class Vector {
     public func mag() -> Float {
         return sqrt(x*x+y*y)
     }
+
+    public func mag²() -> Float {
+        return x*x+y*y
+    }
     
     public static func *(lhs: Vector, rhs: Float) -> Vector {
         return Vector(x: lhs.x*rhs, y: lhs.y*rhs)
