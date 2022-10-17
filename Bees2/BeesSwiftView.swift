@@ -23,6 +23,7 @@ public class BeesSwiftView: ScreenSaverView {
     @IBOutlet weak var swarmColorWell: NSColorWell!
     @IBOutlet weak var swarmRainbowCheckbox: NSButton!
     @IBOutlet weak var queenVisibleCheckbox: NSButton!
+
     static let queenNumberPrefsKey = "queenNumber"
     static let swarmNumberPrefsKey = "swarmNumber"
     static let queenSpeedPrefsKey = "queenSpeed"
@@ -47,6 +48,8 @@ public class BeesSwiftView: ScreenSaverView {
     var image: CGImage?
     
     static let ageLimit = 300
+    static let fadeIn = 300.0
+    
     
     private func randomPoint(x: Float, y: Float) -> Vector {
         return Vector(x: Float(drand48())*x, y: Float(drand48())*y)
@@ -132,10 +135,6 @@ public class BeesSwiftView: ScreenSaverView {
             buffer?.context!.draw(image!, in: self.bounds)
         }
 
-        context?.setFillColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-        context?.fill(self.bounds)
-
-
         // animate swarm
         let colour = saverDefaults?.array(forKey: BeesSwiftView.swarmColourPrefsKey) as! [Double]
         let queenColour = saverDefaults?.array(forKey: BeesSwiftView.queenColourPrefsKey) as! [Double]
@@ -146,6 +145,13 @@ public class BeesSwiftView: ScreenSaverView {
         let respawnRadius² = respawnRadius*respawnRadius
         let queenVisible = (saverDefaults?.bool(forKey: BeesSwiftView.queenVisiblePrefsKey))!
         let swarmRainbow = (saverDefaults?.bool(forKey: BeesSwiftView.swarmRainbowPrefsKey))!
+        let fade = (saverDefaults?.float(forKey: BeesSwiftView.fadePrefsKey))!
+        
+        context?.setFillColor(red: 0, green: 0, blue: 0, alpha: CGFloat(fade))
+        context?.fill(self.bounds)
+
+
+
         context?.setBlendMode(CGBlendMode.lighten)
         
         context?.setLineWidth(5.0)
@@ -180,10 +186,10 @@ public class BeesSwiftView: ScreenSaverView {
             
             
             if (swarmRainbow) {
-                context?.setStrokeColor(red: CGFloat(col.0), green: CGFloat(col.1), blue: CGFloat(col.2), alpha: CGFloat(min(Double(d.age) / 300.0, 1.0)))
+                context?.setStrokeColor(red: CGFloat(col.0), green: CGFloat(col.1), blue: CGFloat(col.2), alpha: CGFloat(min(Double(d.age) / BeesSwiftView.fadeIn, 1.0)))
 
             } else {
-                context?.setStrokeColor(red: CGFloat(colour[0]), green: CGFloat(colour[1]), blue: CGFloat(colour[2]), alpha: CGFloat(min(Double(d.age) / 300.0, 1.0)))
+                context?.setStrokeColor(red: CGFloat(colour[0]), green: CGFloat(colour[1]), blue: CGFloat(colour[2]), alpha: CGFloat(min(Double(d.age) / BeesSwiftView.fadeIn, 1.0)))
             }
             
             context?.strokeLineSegments(between: [CGPoint(x: Double(d.position.x), y: Double(d.position.y)),
