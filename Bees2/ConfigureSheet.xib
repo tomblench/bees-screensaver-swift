@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="BeesSwiftView" customModule="Bees2" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="Prefs">
             <connections>
                 <outlet property="fadeSlider" destination="74l-yT-UL6" id="795-Qx-o87"/>
                 <outlet property="queenColorWell" destination="K8e-gB-htc" id="Wus-GP-4Lz"/>
