@@ -39,6 +39,44 @@ public class Prefs : NSObject {
     public static let swarmColourPrefsKey = "swarmColour"
     public static let swarmRainbowPrefsKey = "swarmRainbow"
     
+    public override init() {
+        // TODO update defaults for all keys
+        /*
+         Saver defaults <Screenprefs.saverDefaults: 0x133e265f0>
+         {
+         fade = "0.06514469844357977";
+         queenColour =     (
+         1,
+         1,
+         1,
+         1
+         );
+         queenNumber = 10;
+         queenSpeed = "45.62776820866141";
+         swarmAcceleration = "0.00500738188976378";
+         swarmColour =     (
+         "0.5",
+         "0.6182755878741468",
+         1
+         );
+         swarmNumber = 1000;
+         swarmRespawnRadius = 20;
+         swarmSpeed = "15.33126230314961";
+         }
+         */
+        let defaults = [Prefs.queenNumberPrefsKey:1,
+                        Prefs.swarmNumberPrefsKey:10,
+                        Prefs.queenSpeedPrefsKey:5.710116731517509,
+                        Prefs.swarmSpeedPrefsKey:3.162086575875486,
+                        Prefs.swarmRespawnRadiusPrefsKey:0.2740454766536965,
+                        Prefs.swarmAccelerationPrefsKey:0.008631748540856032,
+                        Prefs.fadePrefsKey:0.06514469844357977,
+                        Prefs.swarmColourPrefsKey:[0.0,0.0,1.0],
+                        Prefs.queenColourPrefsKey:[1.0,0.4153324174586498,0.790315105986194,1.0]] as [String : Any]
+        NSLog("Saver defaults %@", saverDefaults ?? "nil")
+        saverDefaults.register(defaults: defaults)
+    }
+    
     public func configureSheet(prefsWindow: NSWindow!) {
         self.prefsWindow = prefsWindow
         self.queenNumberSlider.integerValue = (saverDefaults.integer(forKey: Prefs.queenNumberPrefsKey))
@@ -79,6 +117,10 @@ public class Prefs : NSObject {
         NSLog("on ok Saver defaults %@", saverDefaults ?? "nil")
         saverDefaults.synchronize()
 //        prefsWindow.endSheet(prefsWindow)
+        NSApp.endSheet(prefsWindow!)
+    }
+    
+    @IBAction func onCancel(_ sender: Any) {
         NSApp.endSheet(prefsWindow!)
     }
     

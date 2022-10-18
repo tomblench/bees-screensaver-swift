@@ -11,22 +11,20 @@ import ScreenSaver
 
 public class BeesSwiftView: ScreenSaverView {
     
-    
-
     // beezzz
     var queens = Array<Bee>()
     var swarm = Array<Bee>()
     
-    
-    
+    // used for fading/persistence
     var image: CGImage?
     
+    // how many frames before a drone in respawned
     static let ageLimit = 300
+    // how many frames to fade in new drones (???)
     static let fadeIn = 300.0
     
+    // for displaying preferences sheet and getting preferences values
     let prefs = Prefs()
-
-    
     
     private func randomPoint(x: Float, y: Float) -> Vector {
         return Vector(x: Float(drand48())*x, y: Float(drand48())*y)
@@ -39,46 +37,10 @@ public class BeesSwiftView: ScreenSaverView {
         return circ + Vector(x: x/2, y: y/2)
     }
     
-    
     override public init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
         // use our bundle id to register defaults
         NSLog("Bundle name %@", Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
-        // TODO update defaults for all keys
-        /*
-         Saver defaults <Screenprefs.saverDefaults: 0x133e265f0>
-         {
-         fade = "0.06514469844357977";
-         queenColour =     (
-         1,
-         1,
-         1,
-         1
-         );
-         queenNumber = 10;
-         queenSpeed = "45.62776820866141";
-         swarmAcceleration = "0.00500738188976378";
-         swarmColour =     (
-         "0.5",
-         "0.6182755878741468",
-         1
-         );
-         swarmNumber = 1000;
-         swarmRespawnRadius = 20;
-         swarmSpeed = "15.33126230314961";
-         }
-         */
-        let defaults = [Prefs.queenNumberPrefsKey:1,
-                        Prefs.swarmNumberPrefsKey:10,
-                        Prefs.queenSpeedPrefsKey:5.710116731517509,
-                        Prefs.swarmSpeedPrefsKey:3.162086575875486,
-                        Prefs.swarmRespawnRadiusPrefsKey:0.2740454766536965,
-                        Prefs.swarmAccelerationPrefsKey:0.008631748540856032,
-                        Prefs.fadePrefsKey:0.06514469844357977,
-                        Prefs.swarmColourPrefsKey:[0.0,0.0,1.0],
-                        Prefs.queenColourPrefsKey:[1.0,0.4153324174586498,0.790315105986194,1.0]] as [String : Any]
-        NSLog("Saver defaults %@", prefs.saverDefaults ?? "nil")
-        prefs.saverDefaults.register(defaults: defaults)
         
         // seed queens in centre
         for _ in 1...(prefs.saverDefaults.integer(forKey: Prefs.queenNumberPrefsKey)) {
@@ -88,9 +50,6 @@ public class BeesSwiftView: ScreenSaverView {
         for _ in 1...(prefs.saverDefaults.integer(forKey: Prefs.swarmNumberPrefsKey))  {
             swarm.append(Bee(v: randomCircularPoint(x: Float(self.bounds.width.native), y: Float(self.bounds.height.native))))
         }
-        
-        
-        
     }
     
     public required init?(coder: NSCoder) {
@@ -127,12 +86,10 @@ public class BeesSwiftView: ScreenSaverView {
         context?.setFillColor(red: 0, green: 0, blue: 0, alpha: CGFloat(fade))
         context?.fill(self.bounds)
         
-        
-        
         context?.setBlendMode(CGBlendMode.lighten)
-        
         context?.setLineWidth(5.0)
         context?.setLineCap(CGLineCap.butt)
+        
         for d in swarm {
             // set vector towards queen
             // find closest queen, its difference vector, and magnitude
@@ -160,7 +117,6 @@ public class BeesSwiftView: ScreenSaverView {
             // fade in by age
             
             let col = hsvToRgb(h: Float(d.age) / Float(BeesSwiftView.ageLimit), s: 1.0, v: 1.0)
-            
             
             if (swarmRainbow) {
                 context?.setStrokeColor(red: CGFloat(col.0), green: CGFloat(col.1), blue: CGFloat(col.2), alpha: CGFloat(min(Double(d.age) / BeesSwiftView.fadeIn, 1.0)))
@@ -202,7 +158,6 @@ public class BeesSwiftView: ScreenSaverView {
         NSGraphicsContext.current?.cgContext.draw(buffer!, at: CGPoint())
         
         self.image = (context!.makeImage())!
-        
     }
     
     public override var hasConfigureSheet: Bool {
@@ -228,7 +183,5 @@ public class BeesSwiftView: ScreenSaverView {
             prefs.configureSheet(prefsWindow: prefsWindow)
             return prefsWindow
         }
-        
-        
     }
 }
