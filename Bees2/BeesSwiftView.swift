@@ -35,8 +35,8 @@ public class BeesSwiftView: ScreenSaverView {
     static let queenVisiblePrefsKey = "queenVisible"
     static let swarmColourPrefsKey = "swarmColour"
     static let swarmRainbowPrefsKey = "swarmRainbow"
-    var saverDefaults: ScreenSaverDefaults?
-
+    var saverDefaults = ScreenSaverDefaults(forModuleWithName: Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)!
+    
     // beezzz
     var queens = Array<Bee>()
     var swarm = Array<Bee>()
@@ -62,6 +62,7 @@ public class BeesSwiftView: ScreenSaverView {
         return circ + Vector(x: x/2, y: y/2)
     }
 
+    
     override public init?(frame: NSRect, isPreview: Bool) {
         super.init(frame: frame, isPreview: isPreview)
         // use our bundle id to register defaults
@@ -99,16 +100,15 @@ public class BeesSwiftView: ScreenSaverView {
                         BeesSwiftView.fadePrefsKey:0.06514469844357977,
                         BeesSwiftView.swarmColourPrefsKey:[0.0,0.0,1.0],
                         BeesSwiftView.queenColourPrefsKey:[1.0,0.4153324174586498,0.790315105986194,1.0]] as [String : Any]
-        saverDefaults = ScreenSaverDefaults(forModuleWithName: Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
         NSLog("Saver defaults %@", saverDefaults ?? "nil")
-        saverDefaults!.register(defaults: defaults)
+        saverDefaults.register(defaults: defaults)
 
         // seed queens in centre
-        for _ in 1...(saverDefaults?.integer(forKey: BeesSwiftView.queenNumberPrefsKey))! {
+        for _ in 1...(saverDefaults.integer(forKey: BeesSwiftView.queenNumberPrefsKey)) {
             queens.append(Bee(v: Vector(x: Float(self.bounds.width.native)/2, y: Float(self.bounds.height.native)/2)))
         }
         // seed drones in random positions
-        for _ in 1...(saverDefaults?.integer(forKey: BeesSwiftView.swarmNumberPrefsKey))!  {
+        for _ in 1...(saverDefaults.integer(forKey: BeesSwiftView.swarmNumberPrefsKey))  {
             swarm.append(Bee(v: randomCircularPoint(x: Float(self.bounds.width.native), y: Float(self.bounds.height.native))))
         }
 
@@ -136,16 +136,16 @@ public class BeesSwiftView: ScreenSaverView {
         }
 
         // animate swarm
-        let colour = saverDefaults?.array(forKey: BeesSwiftView.swarmColourPrefsKey) as! [Double]
-        let queenColour = saverDefaults?.array(forKey: BeesSwiftView.queenColourPrefsKey) as! [Double]
-        let respawnRadius = (saverDefaults?.float(forKey: BeesSwiftView.swarmRespawnRadiusPrefsKey))!
-        let swarmAcceleration = (saverDefaults?.float(forKey: BeesSwiftView.swarmAccelerationPrefsKey))!
-        let queenSpeed = (saverDefaults?.float(forKey: BeesSwiftView.queenSpeedPrefsKey))!
-        let swarmSpeed = (saverDefaults?.float(forKey: BeesSwiftView.swarmSpeedPrefsKey))!
+        let colour = saverDefaults.array(forKey: BeesSwiftView.swarmColourPrefsKey) as! [Double]
+        let queenColour = saverDefaults.array(forKey: BeesSwiftView.queenColourPrefsKey) as! [Double]
+        let respawnRadius = (saverDefaults.float(forKey: BeesSwiftView.swarmRespawnRadiusPrefsKey))
+        let swarmAcceleration = (saverDefaults.float(forKey: BeesSwiftView.swarmAccelerationPrefsKey))
+        let queenSpeed = (saverDefaults.float(forKey: BeesSwiftView.queenSpeedPrefsKey))
+        let swarmSpeed = (saverDefaults.float(forKey: BeesSwiftView.swarmSpeedPrefsKey))
         let respawnRadius² = respawnRadius*respawnRadius
-        let queenVisible = (saverDefaults?.bool(forKey: BeesSwiftView.queenVisiblePrefsKey))!
-        let swarmRainbow = (saverDefaults?.bool(forKey: BeesSwiftView.swarmRainbowPrefsKey))!
-        let fade = (saverDefaults?.float(forKey: BeesSwiftView.fadePrefsKey))!
+        let queenVisible = (saverDefaults.bool(forKey: BeesSwiftView.queenVisiblePrefsKey))
+        let swarmRainbow = (saverDefaults.bool(forKey: BeesSwiftView.swarmRainbowPrefsKey))
+        let fade = (saverDefaults.float(forKey: BeesSwiftView.fadePrefsKey))
         
         context?.setFillColor(red: 0, green: 0, blue: 0, alpha: CGFloat(fade))
         context?.fill(self.bounds)
@@ -244,19 +244,19 @@ public class BeesSwiftView: ScreenSaverView {
                     self.prefsWindow = o as? NSWindow
                 }
             }
-            self.queenNumberSlider.integerValue = (saverDefaults?.integer(forKey: BeesSwiftView.queenNumberPrefsKey))!
-            self.swarmNumberSlider.integerValue = (saverDefaults?.integer(forKey: BeesSwiftView.swarmNumberPrefsKey))!
-            self.queenSpeedSlider.doubleValue = (saverDefaults?.double(forKey: BeesSwiftView.queenSpeedPrefsKey))!
-            self.swarmSpeedSlider.doubleValue = (saverDefaults?.double(forKey:BeesSwiftView.swarmSpeedPrefsKey))!
-            self.swarmAccelerationSlider.doubleValue = (saverDefaults?.double(forKey:BeesSwiftView.swarmAccelerationPrefsKey))!
-            self.swarmRespawnRadiusSlider.doubleValue = (saverDefaults?.double(forKey:BeesSwiftView.swarmRespawnRadiusPrefsKey))!
-            self.fadeSlider.doubleValue = (saverDefaults?.double(forKey: BeesSwiftView.fadePrefsKey))!
-            let colour = (saverDefaults?.array(forKey: BeesSwiftView.swarmColourPrefsKey)) as! [Double]
+            self.queenNumberSlider.integerValue = (saverDefaults.integer(forKey: BeesSwiftView.queenNumberPrefsKey))
+            self.swarmNumberSlider.integerValue = (saverDefaults.integer(forKey: BeesSwiftView.swarmNumberPrefsKey))
+            self.queenSpeedSlider.doubleValue = (saverDefaults.double(forKey: BeesSwiftView.queenSpeedPrefsKey))
+            self.swarmSpeedSlider.doubleValue = (saverDefaults.double(forKey:BeesSwiftView.swarmSpeedPrefsKey))
+            self.swarmAccelerationSlider.doubleValue = (saverDefaults.double(forKey:BeesSwiftView.swarmAccelerationPrefsKey))
+            self.swarmRespawnRadiusSlider.doubleValue = (saverDefaults.double(forKey:BeesSwiftView.swarmRespawnRadiusPrefsKey))
+            self.fadeSlider.doubleValue = (saverDefaults.double(forKey: BeesSwiftView.fadePrefsKey))
+            let colour = (saverDefaults.array(forKey: BeesSwiftView.swarmColourPrefsKey)) as! [Double]
             self.swarmColorWell.color = NSColor(red: CGFloat(colour[0]), green: CGFloat(colour[1]), blue: CGFloat(colour[2]), alpha: 1.0)
-            let queenColour = (saverDefaults?.array(forKey: BeesSwiftView.queenColourPrefsKey)) as! [Double]
+            let queenColour = (saverDefaults.array(forKey: BeesSwiftView.queenColourPrefsKey)) as! [Double]
             self.queenColorWell.color = NSColor(red: CGFloat(queenColour[0]), green: CGFloat(queenColour[1]), blue: CGFloat(queenColour[2]), alpha: CGFloat(queenColour[3]))
-            self.queenVisibleCheckbox.state = (saverDefaults?.bool(forKey: BeesSwiftView.queenVisiblePrefsKey))! == true ? NSControl.StateValue.on : NSControl.StateValue.off
-            self.swarmRainbowCheckbox.state = (saverDefaults?.bool(forKey: BeesSwiftView.swarmRainbowPrefsKey))! == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            self.queenVisibleCheckbox.state = (saverDefaults.bool(forKey: BeesSwiftView.queenVisiblePrefsKey)) == true ? NSControl.StateValue.on : NSControl.StateValue.off
+            self.swarmRainbowCheckbox.state = (saverDefaults.bool(forKey: BeesSwiftView.swarmRainbowPrefsKey)) == true ? NSControl.StateValue.on : NSControl.StateValue.off
             NSLog("**** configureSheet with %@", prefsWindow ?? "nil")
                 
             onQueenVisibleToggle(Void.self)
@@ -267,22 +267,22 @@ public class BeesSwiftView: ScreenSaverView {
     
     @IBAction func onOk(_ sender: Any) {
         NSLog("**** onok with %@", prefsWindow ?? "nil")
-        saverDefaults?.set(queenNumberSlider.integerValue, forKey: BeesSwiftView.queenNumberPrefsKey)
-        saverDefaults?.set(swarmNumberSlider.integerValue, forKey: BeesSwiftView.swarmNumberPrefsKey)
-        saverDefaults?.set(queenSpeedSlider.doubleValue, forKey: BeesSwiftView.queenSpeedPrefsKey)
-        saverDefaults?.set(swarmSpeedSlider.doubleValue, forKey: BeesSwiftView.swarmSpeedPrefsKey)
-        saverDefaults?.set(swarmAccelerationSlider.doubleValue, forKey: BeesSwiftView.swarmAccelerationPrefsKey)
-        saverDefaults?.set(swarmRespawnRadiusSlider.doubleValue, forKey: BeesSwiftView.swarmRespawnRadiusPrefsKey)
-        saverDefaults?.set(fadeSlider.doubleValue, forKey: BeesSwiftView.fadePrefsKey)
-        saverDefaults?.set([swarmColorWell.color.redComponent.native, swarmColorWell.color.greenComponent.native, swarmColorWell.color.blueComponent.native], forKey: BeesSwiftView.swarmColourPrefsKey)
-        saverDefaults?.set([queenColorWell.color.redComponent.native, queenColorWell.color.greenComponent.native, queenColorWell.color.blueComponent.native, queenColorWell.color.alphaComponent.native], forKey: BeesSwiftView.queenColourPrefsKey)
-        saverDefaults?.set(queenVisibleCheckbox.state == NSControl.StateValue.on ? true : false, forKey: BeesSwiftView.queenVisiblePrefsKey)
-        saverDefaults?.set(swarmRainbowCheckbox.state == NSControl.StateValue.on ? true : false, forKey: BeesSwiftView.swarmRainbowPrefsKey)
+        saverDefaults.set(queenNumberSlider.integerValue, forKey: BeesSwiftView.queenNumberPrefsKey)
+        saverDefaults.set(swarmNumberSlider.integerValue, forKey: BeesSwiftView.swarmNumberPrefsKey)
+        saverDefaults.set(queenSpeedSlider.doubleValue, forKey: BeesSwiftView.queenSpeedPrefsKey)
+        saverDefaults.set(swarmSpeedSlider.doubleValue, forKey: BeesSwiftView.swarmSpeedPrefsKey)
+        saverDefaults.set(swarmAccelerationSlider.doubleValue, forKey: BeesSwiftView.swarmAccelerationPrefsKey)
+        saverDefaults.set(swarmRespawnRadiusSlider.doubleValue, forKey: BeesSwiftView.swarmRespawnRadiusPrefsKey)
+        saverDefaults.set(fadeSlider.doubleValue, forKey: BeesSwiftView.fadePrefsKey)
+        saverDefaults.set([swarmColorWell.color.redComponent.native, swarmColorWell.color.greenComponent.native, swarmColorWell.color.blueComponent.native], forKey: BeesSwiftView.swarmColourPrefsKey)
+        saverDefaults.set([queenColorWell.color.redComponent.native, queenColorWell.color.greenComponent.native, queenColorWell.color.blueComponent.native, queenColorWell.color.alphaComponent.native], forKey: BeesSwiftView.queenColourPrefsKey)
+        saverDefaults.set(queenVisibleCheckbox.state == NSControl.StateValue.on ? true : false, forKey: BeesSwiftView.queenVisiblePrefsKey)
+        saverDefaults.set(swarmRainbowCheckbox.state == NSControl.StateValue.on ? true : false, forKey: BeesSwiftView.swarmRainbowPrefsKey)
 
         NSColorPanel.shared.orderOut(self)
         // TODO figure out how to replace this deprecated method
         NSLog("on ok Saver defaults %@", saverDefaults ?? "nil")
-        saverDefaults?.synchronize()
+        saverDefaults.synchronize()
         NSApp.endSheet(prefsWindow!)
     }
     
@@ -295,54 +295,5 @@ public class BeesSwiftView: ScreenSaverView {
     }
 
     
-    func hsvToRgb(h: Float, s: Float, v: Float) -> (Float, Float, Float)
-    {
-
-
-        let hh = h * 6.0
-        let i = Int(hh)
-        let ff = hh - Float(i)
-        let p = v * (1.0 - s)
-        let q = v * (1.0 - (s * ff))
-        let t = v * (1.0 - (s * (1.0 - ff)))
-        var r = Float()
-        var g = Float()
-        var b = Float()
-        switch(i) {
-            case 0:
-                r = v;
-                g = t;
-                b = p;
-                break;
-            case 1:
-                r = q;
-                g = v;
-                b = p;
-                break;
-            case 2:
-                r = p;
-                g = v;
-                b = t;
-                break;
-
-            case 3:
-                r = p;
-                g = q;
-                b = v;
-                break;
-            case 4:
-                r = t;
-                g = p;
-                b = v;
-                break;
-            default:
-                r = v;
-                g = p;
-                b = q;
-                break;
-            }
-
-        return (r, g, b)
-    }
     
 }
