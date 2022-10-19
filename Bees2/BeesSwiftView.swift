@@ -162,6 +162,7 @@ public class BeesSwiftView: ScreenSaverView {
     
     public override var hasConfigureSheet: Bool {
         get {
+            NSLog("**** hasConfigureSheet ")
             return true
         }
     }

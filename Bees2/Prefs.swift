@@ -10,7 +10,7 @@ import Foundation
 import AppKit
 import ScreenSaver
 
-public class Prefs : NSObject {
+public class Prefs : NSObject, NSControlTextEditingDelegate {
     var prefsWindow: NSWindow!
 
     @IBOutlet weak var queenNumberSlider: NSTextField!
@@ -38,6 +38,8 @@ public class Prefs : NSObject {
     public static let queenVisiblePrefsKey = "queenVisible"
     public static let swarmColourPrefsKey = "swarmColour"
     public static let swarmRainbowPrefsKey = "swarmRainbow"
+    
+    @IBOutlet weak var myDel: MyDelegate!
     
     public override init() {
         // TODO update defaults for all keys
@@ -99,9 +101,14 @@ public class Prefs : NSObject {
     }
     
     @IBAction func onOk(_ sender: Any) {
-        NSLog("**** onok with %@", prefsWindow ?? "nil")
-        saverDefaults.set(queenNumberSlider.integerValue, forKey: Prefs.queenNumberPrefsKey)
-        saverDefaults.set(swarmNumberSlider.integerValue, forKey: Prefs.swarmNumberPrefsKey)
+        
+        if let queenNumber = (queenNumberSlider.formatter as! NumberFormatter).number(from: queenNumberSlider.stringValue) {
+            saverDefaults.set(queenNumber, forKey: Prefs.queenNumberPrefsKey)
+
+        }
+        if let swarmNumber = (swarmNumberSlider.formatter as! NumberFormatter).number(from: swarmNumberSlider.stringValue) {
+            saverDefaults.set(swarmNumber, forKey: Prefs.swarmNumberPrefsKey)
+        }
         saverDefaults.set(queenSpeedSlider.doubleValue, forKey: Prefs.queenSpeedPrefsKey)
         saverDefaults.set(swarmSpeedSlider.doubleValue, forKey: Prefs.swarmSpeedPrefsKey)
         saverDefaults.set(swarmAccelerationSlider.doubleValue, forKey: Prefs.swarmAccelerationPrefsKey)
@@ -131,5 +138,53 @@ public class Prefs : NSObject {
     @IBAction func onSwarmRainbowToggle(_ sender: Any) {
         swarmColorWell.isEnabled = swarmRainbowCheckbox.state == NSControl.StateValue.on ? true : false
     }
+    
+
+    // should use this instead? will it give live updates without focus change?
+    public func control(_ control: NSControl, didFailToValidatePartialString string: String, errorDescription error: String?) {
+        NSLog("*** didFailToValidatePartialString")
+    }
+
+    /*
+    public func control(_ control: NSControl, isValidObject obj: Any?) -> Bool {
+        
+    }*/
+
+    public func control(_ control: NSControl, didFailToFormatString string: String, errorDescription error: String?) -> Bool
+    {
+        NSLog("*** didFailToFormatString")
+        
+        if let textField = control as? NSTextField {
+            // TODO return to previous value and return true
+            if (textField == queenNumberSlider) {
+                textField.integerValue = saverDefaults.integer(forKey: Prefs.queenNumberPrefsKey)
+                return true;
+            } else if (textField == swarmNumberSlider) {
+                textField.integerValue = saverDefaults.integer(forKey: Prefs.swarmNumberPrefsKey)
+                return true;
+            }
+            if let formatter = control.formatter as? NumberFormatter {
+                NSLog("*** fiekd %@ %@ %@", textField.debugDescription, string, formatter.maximum ?? "???")
+                
+            }
+        }
+        NSLog("*** fail %@ %@ %@", control.debugDescription, string, error?.debugDescription ?? "???")
+        return false;
+
+    }
+
+    /*
+    func controlTextDidBeginEditing(_ obj: Notification) {
+        
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        
+    }
+
+    func controlTextDidChange(_ obj: Notification) {
+        
+    }*/
+
     
 }
