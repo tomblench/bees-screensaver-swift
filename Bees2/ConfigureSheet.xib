@@ -105,7 +105,7 @@ DQ
                     <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="We8-VS-jvX">
                         <rect key="frame" x="184" y="162" width="278" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <sliderCell key="cell" state="on" alignment="left" maxValue="0.050000000000000003" doubleValue="0.01" tickMarkPosition="above" sliderType="linear" id="14P-X9-FZv"/>
+                        <sliderCell key="cell" state="on" alignment="left" minValue="0.001" maxValue="0.050000000000000003" doubleValue="0.02" tickMarkPosition="above" sliderType="linear" id="14P-X9-FZv"/>
                     </slider>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sJl-ay-gTe">
                         <rect key="frame" x="18" y="138" width="162" height="17"/>
