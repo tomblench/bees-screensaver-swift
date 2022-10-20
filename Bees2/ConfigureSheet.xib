@@ -10,12 +10,13 @@
             <connections>
                 <outlet property="fadeSlider" destination="74l-yT-UL6" id="795-Qx-o87"/>
                 <outlet property="queenColorWell" destination="K8e-gB-htc" id="Wus-GP-4Lz"/>
-                <outlet property="queenNumberSlider" destination="vdV-Uk-9li" id="332-YS-iSk"/>
+                <outlet property="queenNumberSlider" destination="DJM-Yb-RhB" id="4JD-zn-cAz"/>
                 <outlet property="queenSpeedSlider" destination="eYN-ae-MhM" id="q5F-6R-QMg"/>
                 <outlet property="queenVisibleCheckbox" destination="ohB-Be-5fi" id="nau-Ly-lMD"/>
+                <outlet property="sheet" destination="QvC-M9-y7g" id="Rd9-FL-JiS"/>
                 <outlet property="swarmAccelerationSlider" destination="We8-VS-jvX" id="nWZ-lV-COf"/>
                 <outlet property="swarmColorWell" destination="Ztn-Zi-Shj" id="GDe-GH-m10"/>
-                <outlet property="swarmNumberSlider" destination="jgl-Vk-O4w" id="JmC-nY-YCE"/>
+                <outlet property="swarmNumberSlider" destination="Cuf-gn-41v" id="wzJ-Aj-UZ8"/>
                 <outlet property="swarmRainbowCheckbox" destination="u6B-DY-G6A" id="QdF-Cs-FfX"/>
                 <outlet property="swarmRespawnRadiusSlider" destination="7a6-SZ-XF1" id="u9l-79-9ic"/>
                 <outlet property="swarmSpeedSlider" destination="Wsz-d4-f6m" id="H2j-Gd-FwX"/>
@@ -161,22 +162,6 @@ DQ
                         <rect key="frame" x="20" y="395" width="440" height="5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </box>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vdV-Uk-9li">
-                        <rect key="frame" x="186" y="370" width="96" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Okr-rD-Uel">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" formatWidth="-1" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="42" id="802-XO-DmJ">
-                                <real key="minimum" value="0.0"/>
-                                <real key="maximum" value="100"/>
-                            </numberFormatter>
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <outlet property="delegate" destination="-2" id="2fl-0g-YVs"/>
-                        </connections>
-                    </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FzE-ms-n7S">
                         <rect key="frame" x="18" y="272" width="162" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -190,22 +175,6 @@ DQ
                         <rect key="frame" x="20" y="261" width="440" height="5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </box>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-Vk-O4w">
-                        <rect key="frame" x="186" y="236" width="96" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="5pu-IR-UZd">
-                            <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" formatWidth="-1" groupingSize="0" minimumIntegerDigits="1" maximumIntegerDigits="42" id="nZQ-eV-ocV">
-                                <real key="minimum" value="0.0"/>
-                                <real key="maximum" value="1000"/>
-                            </numberFormatter>
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <outlet property="delegate" destination="-2" id="HLU-0Q-eTJ"/>
-                        </connections>
-                    </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ohB-Be-5fi">
                         <rect key="frame" x="236" y="346" width="67" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -237,11 +206,6 @@ DQ
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74l-yT-UL6">
-                        <rect key="frame" x="184" y="54" width="278" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <sliderCell key="cell" state="on" alignment="left" minValue="0.01" maxValue="1" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="Ivz-5u-U2F"/>
-                    </slider>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lEc-NG-wfl">
                         <rect key="frame" x="18" y="88" width="162" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -269,6 +233,21 @@ Gw
                             <action selector="onCancel:" target="-2" id="yKK-lk-gyd"/>
                         </connections>
                     </button>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DJM-Yb-RhB">
+                        <rect key="frame" x="184" y="369" width="278" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="10" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="44G-cY-i5D"/>
+                    </slider>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cuf-gn-41v">
+                        <rect key="frame" x="184" y="235" width="278" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="1000" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="DZb-ls-4YF"/>
+                    </slider>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74l-yT-UL6">
+                        <rect key="frame" x="184" y="47" width="278" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" state="on" alignment="left" minValue="0.10000000000000001" maxValue="8" doubleValue="1" tickMarkPosition="above" sliderType="linear" id="Ivz-5u-U2F"/>
+                    </slider>
                 </subviews>
             </view>
             <point key="canvasLocation" x="-96" y="194.5"/>
