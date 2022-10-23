@@ -13,6 +13,7 @@
 		8E9989AD207BF9DB0081EEAE /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AC207BF9DB0081EEAE /* Vector.swift */; };
 		8E9989AF207BF9EE0081EEAE /* Bee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9989AE207BF9EE0081EEAE /* Bee.swift */; };
 		8E9989B1207C92B10081EEAE /* ConfigureSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E9989B0207C92B10081EEAE /* ConfigureSheet.xib */; };
+		8EEFFE6129059DB5000E96D9 /* PrefsPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEFFE6029059DB5000E96D9 /* PrefsPresets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		8E9989AC207BF9DB0081EEAE /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		8E9989AE207BF9EE0081EEAE /* Bee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bee.swift; sourceTree = "<group>"; };
 		8E9989B0207C92B10081EEAE /* ConfigureSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConfigureSheet.xib; path = Bees2/ConfigureSheet.xib; sourceTree = "<group>"; };
+		8EEFFE6029059DB5000E96D9 /* PrefsPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefsPresets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				8E9989AE207BF9EE0081EEAE /* Bee.swift */,
 				8E29AE4F28FDDA7600CB378B /* ColourUtil.swift */,
 				8E29AE5128FEA4EF00CB378B /* Prefs.swift */,
+				8EEFFE6029059DB5000E96D9 /* PrefsPresets.swift */,
 			);
 			path = Bees2;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 				8E9989AD207BF9DB0081EEAE /* Vector.swift in Sources */,
 				8E29AE5028FDDA7600CB378B /* ColourUtil.swift in Sources */,
 				8E29AE5228FEA4EF00CB378B /* Prefs.swift in Sources */,
+				8EEFFE6129059DB5000E96D9 /* PrefsPresets.swift in Sources */,
 				8E9989AF207BF9EE0081EEAE /* Bee.swift in Sources */,
 				8E9989AB207BF7510081EEAE /* BeesSwiftView.swift in Sources */,
 			);

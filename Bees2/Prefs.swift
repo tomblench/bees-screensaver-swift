@@ -15,7 +15,8 @@ public class Prefs : NSObject {
     public var saverDefaults = ScreenSaverDefaults(forModuleWithName: Bundle.init(for: Prefs.self).bundleIdentifier!)!
 
     @IBOutlet weak var sheet: NSWindow!
-    
+
+    @IBOutlet weak var presetsComboBox: NSPopUpButton!
     @IBOutlet weak var queenNumberSlider: NSSlider!
     @IBOutlet weak var queenColorWell: NSColorWell!
     @IBOutlet weak var queenVisibleCheckbox: NSButton!
@@ -46,7 +47,7 @@ public class Prefs : NSObject {
     var queenVisible = false
     var queenSpeed: Float = 100.0
     var swarmNumber = 200
-    var swarmColour = [0.0, 0.0, 1.0]
+    var swarmColour = [0.0, 1.0, 0.0]
     var swarmRainbow = false
     var swarmSpeed: Float = 50.0
     var swarmAcceleration: Float = 0.01
@@ -74,6 +75,12 @@ public class Prefs : NSObject {
                         Prefs.fadePrefsKey: fadeLinear] as [String : Any]
         saverDefaults.register(defaults: defaults)
         NSLog("init saver defaults %@", saverDefaults)
+    }
+    
+    public override func awakeFromNib() {
+        for k in PrefsPresets.presets.keys {
+            self.presetsComboBox.addItem(withTitle: k)
+        }
     }
     
     // sync "unpacked" and derived fields for easy access from the View
@@ -111,8 +118,8 @@ public class Prefs : NSObject {
         self.swarmRespawnRadiusSlider.doubleValue = (saverDefaults.double(forKey:Prefs.swarmRespawnRadiusPrefsKey))
         self.fadeSlider.doubleValue = (saverDefaults.double(forKey: Prefs.fadePrefsKey))
         // sync colour well enabled
-        onQueenVisibleToggle(Void.self)
-        onSwarmRainbowToggle(Void.self)
+        queenColorWell.isEnabled = queenVisibleCheckbox.state == NSControl.StateValue.on ? true : false
+        swarmColorWell.isEnabled = swarmRainbowCheckbox.state == NSControl.StateValue.off ? true : false
     }
     
     // sync defaults from UI
@@ -134,6 +141,7 @@ public class Prefs : NSObject {
         saverDefaults.synchronize()
         NSLog("on ok saver defaults %@", saverDefaults)
         syncPrefsToFields()
+        // TODO need to let view know that number of bees changed? otherwise preview is incorrect
         sheet.endSheet(sheet)
     }
     
@@ -143,10 +151,28 @@ public class Prefs : NSObject {
     
     @IBAction func onQueenVisibleToggle(_ sender: Any) {
         queenColorWell.isEnabled = queenVisibleCheckbox.state == NSControl.StateValue.on ? true : false
+        onAnyChanged(sender)
     }
     
     @IBAction func onSwarmRainbowToggle(_ sender: Any) {
         swarmColorWell.isEnabled = swarmRainbowCheckbox.state == NSControl.StateValue.off ? true : false
+        onAnyChanged(sender)
     }
+
+    @IBAction func onPresetChanged(_ sender: Any) {
+        if let presetName = presetsComboBox.selectedItem?.title {
+            if let preset = PrefsPresets.presets[presetName] {
+                for k in preset.keys {
+                    saverDefaults.set(preset[k], forKey: k)
+                }
+                configureSheet()
+            }
+        }
+    }
+
+    @IBAction func onAnyChanged(_ sender: Any) {
+        presetsComboBox.selectItem(at: 0)
+    }
+    
     
 }
