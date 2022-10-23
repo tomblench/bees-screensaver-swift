@@ -41,24 +41,41 @@ public class BeesSwiftView: ScreenSaverView {
         return circ + Vector(x: x/2, y: y/2)
     }
     
-    override public init?(frame: NSRect, isPreview: Bool) {
-        super.init(frame: frame, isPreview: isPreview)
-        prefs.syncPrefsToFields()
-        // use our bundle id to register defaults
-        NSLog("Bundle name %@", Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
-        
+    private func seedQueens(n: Int) {
         // seed queens in centre
         for _ in 1...(prefs.queenNumber) {
             queens.append(Bee(v: Vector(x: Float(self.bounds.width.native)/2, y: Float(self.bounds.height.native)/2)))
         }
+    }
+
+    private func seedDrones(n: Int) {
         // seed drones in random positions
         for _ in 1...(prefs.swarmNumber)  {
             swarm.append(Bee(v: randomCircularPoint(x: Float(self.bounds.width.native), y: Float(self.bounds.height.native))))
         }
     }
     
+    override public init?(frame: NSRect, isPreview: Bool) {
+        super.init(frame: frame, isPreview: isPreview)
+        prefs.syncPrefsToFields()
+        // use our bundle id to register defaults
+        NSLog("Bundle name %@", Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
+        initialiseBees()
+    }
+    
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+
+    public func reinitialiseBees() {
+        queens.removeAll()
+        swarm.removeAll()
+        initialiseBees()
+    }
+    
+    public func initialiseBees() {
+        seedQueens(n: prefs.queenNumber)
+        seedDrones(n: prefs.swarmNumber)
     }
     
     public override func animateOneFrame() {
@@ -174,7 +191,7 @@ public class BeesSwiftView: ScreenSaverView {
             NSLog("**** configureSheet")
             var objects = Optional.some(NSArray())
             Bundle.init(for: BeesSwiftView.self).loadNibNamed(NSNib.Name("ConfigureSheet"), owner: self.prefs, topLevelObjects: &objects)
-            prefs.configureSheet()
+            prefs.configureSheet(view: self)
             return prefs.sheet
         }
     }

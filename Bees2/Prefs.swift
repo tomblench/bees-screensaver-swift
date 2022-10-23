@@ -12,6 +12,8 @@ import ScreenSaver
 
 public class Prefs : NSObject {
     
+    var view: BeesSwiftView!
+    
     public var saverDefaults = ScreenSaverDefaults(forModuleWithName: Bundle.init(for: Prefs.self).bundleIdentifier!)!
 
     @IBOutlet weak var sheet: NSWindow!
@@ -83,6 +85,11 @@ public class Prefs : NSObject {
         }
     }
     
+    public func configureSheet(view: BeesSwiftView) {
+        self.view = view
+        syncUiFromPrefs()
+    }
+    
     // sync "unpacked" and derived fields for easy access from the View
     public func syncPrefsToFields() {
         queenNumber = saverDefaults.integer(forKey: Prefs.queenNumberPrefsKey)
@@ -103,7 +110,7 @@ public class Prefs : NSObject {
     }
     
     // sync UI from defaults
-    public func configureSheet() {
+    public func syncUiFromPrefs() {
         self.queenNumberSlider.integerValue = (saverDefaults.integer(forKey: Prefs.queenNumberPrefsKey))
         let qc = (saverDefaults.array(forKey: Prefs.queenColourPrefsKey)) as! [Double]
         self.queenColorWell.color = NSColor(red: CGFloat(qc[0]), green: CGFloat(qc[1]), blue: CGFloat(qc[2]), alpha: 1.0)
@@ -141,7 +148,8 @@ public class Prefs : NSObject {
         saverDefaults.synchronize()
         NSLog("on ok saver defaults %@", saverDefaults)
         syncPrefsToFields()
-        // TODO need to let view know that number of bees changed? otherwise preview is incorrect
+        // tell the view that things have changed, so all the bees need to be re-spawned
+        view.reinitialiseBees()
         sheet.endSheet(sheet)
     }
     
@@ -165,7 +173,7 @@ public class Prefs : NSObject {
                 for k in preset.keys {
                     saverDefaults.set(preset[k], forKey: k)
                 }
-                configureSheet()
+                syncUiFromPrefs()
             }
         }
     }
