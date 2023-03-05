@@ -95,7 +95,8 @@ public class BeesSwiftView: ScreenSaverView {
     public override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
-        let context = CGContext(data: nil, width: Int(self.bounds.width), height: Int(self.bounds.height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue)
+        let context = CGContext(data: nil, width: Int(self.bounds.width), height: Int(self.bounds.height), bitsPerComponent: 16, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        print(context)
         
         // first frame only
         if (self.image != nil) {
