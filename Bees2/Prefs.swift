@@ -150,7 +150,9 @@ public class Prefs : NSObject {
         syncPrefsToFields()
         // tell the view that things have changed, so all the bees need to be re-spawned
         view.reinitialiseBees()
-        sheet.endSheet(sheet)
+//        sheet.parent?.endSheet(sheet)
+        NSApplication.shared.endSheet(sheet)
+   //     sheet.endSheet(sheet)
     }
     
     @IBAction func onCancel(_ sender: Any) {

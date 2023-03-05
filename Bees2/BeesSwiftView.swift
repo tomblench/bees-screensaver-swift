@@ -60,6 +60,10 @@ public class BeesSwiftView: ScreenSaverView {
         prefs.syncPrefsToFields()
         // use our bundle id to register defaults
         NSLog("Bundle name %@", Bundle.init(for: BeesSwiftView.self).bundleIdentifier!)
+       // NSLog("ctx %@", NSGraphicsContext.current!)
+//        self.buffer = CGLayer(NSGraphicsContext.current!.cgContext, size: frame.size, auxiliaryInfo: nil)
+  //      NSLog("buffer is %@", self.buffer.debugDescription)
+
         initialiseBees()
     }
     
@@ -82,15 +86,20 @@ public class BeesSwiftView: ScreenSaverView {
         self.needsDisplay = true
     }
     
+    public override func startAnimation() {
+        NSLog("*** startanimation")
+        super.startAnimation()
+        
+    }
+    
     public override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         
-        let buffer = CGLayer(NSGraphicsContext.current!.cgContext, size: frame.size, auxiliaryInfo: nil)
-        let context = buffer?.context
+        let context = CGContext(data: nil, width: Int(self.bounds.width), height: Int(self.bounds.height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue)
         
         // first frame only
         if (self.image != nil) {
-            buffer?.context!.draw(image!, in: self.bounds)
+            context?.draw(image!, in: self.bounds)
         }
         
         // draw black rectangle with `fade` alpha onto context - the lower `fade` is, the more persistence there is
@@ -173,9 +182,10 @@ public class BeesSwiftView: ScreenSaverView {
         }
         
         // draw buffer directly into screen context
-        NSGraphicsContext.current?.cgContext.draw(buffer!, at: CGPoint())
+        self.image = (context!.makeImage())
         // take "snapshot" of layer for drawing at next frame for persistence
-        self.image = (context!.makeImage())!
+        NSGraphicsContext.current?.cgContext.draw(self.image!, in:self.bounds)
+        
     }
     
     // config sheet - most of this is handed over to Prefs
@@ -196,3 +206,4 @@ public class BeesSwiftView: ScreenSaverView {
         }
     }
 }
+ 
